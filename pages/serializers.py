@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from rest_framework.serializers import raise_errors_on_nested_writes
+from rest_framework.utils import model_meta
 from django.utils.translation import ugettext_lazy as _
 from django.utils.timezone import now
 
@@ -44,22 +46,18 @@ class ComponentCreateSerializer(serializers.ModelSerializer):
             'type',
             'sub_type',
             'bg_color_code',
-            'page_id',
+            'page',
             'pageimages'
         )
         # read_only_fields=('id', )
 
     def create(self, validated_data):
-        print("start create")
+        print(validated_data)
         type = validated_data['type']
-        page_id = validated_data['page_id']
         
         # Get Page object
-        try:
-            page = Page.objects.get(id=page_id)
-        except Page.DoesNotExist:
-            raise serializers.ValidationError('Page does not exist, check correct page id')
-
+        page = validated_data['page']
+        
         # Get superuser
         # user = None
         # request = self.context.get("request")
@@ -80,4 +78,11 @@ class ComponentCreateSerializer(serializers.ModelSerializer):
         
         component.page = page
         component.save()
+        
+        pageimage_datas = validated_data['pageimages']
+        for pageimage_data in pageimage_datas:
+            PageImage.objects.create(
+                component=component, 
+                **pageimage_data)
+            
         return component

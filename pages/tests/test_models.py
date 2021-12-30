@@ -5,6 +5,13 @@ from pages.utils import construct_component
 
 
 class ModelTest(unittest.TestCase):
+    def setUp(self):
+        pass
+    
+    def tearDown(self):
+        Page.objects.all().delete()
+        Component.objects.all().delete()
+    
     def test_create_page(self):
         
         page = Page(

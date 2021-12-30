@@ -37,7 +37,10 @@ class Component(models.Model):
         related_name='component')
     
     def __str__(self):
-        return self.title
+        try:
+            return self.title
+        except:
+            return ''
     
 
 class Banner(Component):

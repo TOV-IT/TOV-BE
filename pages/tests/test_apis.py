@@ -15,17 +15,11 @@ from pages.utils import construct_component
 
 
 
-class ComponentCreateTest(unittest.TestCase):
+class ComponentCreateTest(APITestCase):
     client = APIClient()
     headers = {}
     
     def setUp(self):
-        user = User.objects.create_superuser(username="admin", email="admin@admin.com", password="admin")
-        self.user = user
-        
-        page = Page()
-        page.save()
-        
         # user = {
         #     "username": "admin",
         #     "password": "admin"
@@ -43,6 +37,8 @@ class ComponentCreateTest(unittest.TestCase):
         #     "HTTP_Authorization": "jwt " + self.token,
         #     "X-CSRFToken": self.csrftoken,
         # }
+        pass
+
     
     def test_createapi_component(self):
         pass
